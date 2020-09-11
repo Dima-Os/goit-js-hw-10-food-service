@@ -1,3 +1,4 @@
+'use strict';
 const refs = {
   switchInput: document.querySelector('input.js-switch-input'),
   body: document.querySelector('body'),
@@ -9,31 +10,30 @@ const Theme = {
 };
 
 const chosenTheme = () => {
-  const storagedTheme = JSON.parse(localStorage.getItem('Theme'));
-  if (storagedTheme === Theme.DARK) {
+  if (JSON.parse(localStorage.getItem('Theme')) === Theme.DARK) {
     refs.switchInput.checked = true;
     darkTheme();
   }
 };
 
 const lightTheme = () => {
-  refs.body.classList.add(Theme.LIGHT);
-  refs.body.classList.remove(Theme.DARK);
+  refs.body.classList.replace(Theme.DARK, Theme.LIGHT);
 };
 
 const darkTheme = () => {
-  refs.body.classList.remove(Theme.LIGHT);
-  refs.body.classList.add(Theme.DARK);
+  refs.body.classList.replace(Theme.LIGHT, Theme.DARK);
 };
 
 function onChangeHendler(event) {
-  const switchInut = event.currentTarget;
-  switchInut.checked ? darkTheme() : lightTheme();
+  event.currentTarget.checked ? darkTheme() : lightTheme();
   localStorage.setItem(
     'Theme',
-    JSON.stringify(switchInut.checked ? Theme.DARK : Theme.LIGHT),
+    JSON.stringify(event.currentTarget.checked ? Theme.DARK : Theme.LIGHT),
   );
 }
 
 refs.switchInput.addEventListener('change', onChangeHendler);
+
+refs.body.classList.add(Theme.LIGHT);
+
 chosenTheme();
